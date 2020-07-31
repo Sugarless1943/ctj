@@ -1,44 +1,95 @@
 public class Bean {
-    private String aaa;
-    private String bbb;
-    private String ccc;
+    private String ID;
+    private String Name;
+    private String Parent_ID;
+    private String Type;
+    private String Length;
+    private String Diameter;
+    private String Cid;
+    private String Parent_v_ID;
+    private String Circuit;
 
-    public Bean(String aaa, String bbb, String ccc) {
-        this.aaa = aaa;
-        this.bbb = bbb;
-        this.ccc = ccc;
+    public Bean(String ID, String name, String parent_ID, String type, String length, String diameter, String cid, String parent_v_ID, String circuit) {
+        this.ID = ID;
+        Name = name;
+        Parent_ID = parent_ID;
+        Type = type;
+        Length = length;
+        Diameter = diameter;
+        Cid = cid;
+        Parent_v_ID = parent_v_ID;
+        Circuit = circuit;
     }
 
-    public String getAaa() {
-        return aaa;
+    public String getID() {
+        return ID;
     }
 
-    public void setAaa(String aaa) {
-        this.aaa = aaa;
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
-    public String getBbb() {
-        return bbb;
+    public String getName() {
+        return Name;
     }
 
-    public void setBbb(String bbb) {
-        this.bbb = bbb;
+    public void setName(String name) {
+        Name = name;
     }
 
-    public String getCcc() {
-        return ccc;
+    public String getParent_ID() {
+        return Parent_ID;
     }
 
-    public void setCcc(String ccc) {
-        this.ccc = ccc;
+    public void setParent_ID(String parent_ID) {
+        Parent_ID = parent_ID;
     }
 
-    @Override
-    public String toString() {
-        return "bean{" +
-                "aaa='" + aaa + '\'' +
-                ", bbb='" + bbb + '\'' +
-                ", ccc='" + ccc + '\'' +
-                '}';
+    public String getType() {
+        return Type;
+    }
+
+    public void setType(String type) {
+        Type = type;
+    }
+
+    public String getLength() {
+        return Length;
+    }
+
+    public void setLength(String length) {
+        Length = length;
+    }
+
+    public String getDiameter() {
+        return Diameter;
+    }
+
+    public void setDiameter(String diameter) {
+        Diameter = diameter;
+    }
+
+    public String getCid() {
+        return Cid;
+    }
+
+    public void setCid(String cid) {
+        Cid = cid;
+    }
+
+    public String getParent_v_ID() {
+        return Parent_v_ID;
+    }
+
+    public void setParent_v_ID(String parent_v_ID) {
+        Parent_v_ID = parent_v_ID;
+    }
+
+    public String getCircuit() {
+        return Circuit;
+    }
+
+    public void setCircuit(String circuit) {
+        Circuit = circuit;
     }
 }
