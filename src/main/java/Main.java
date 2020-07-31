@@ -1,7 +1,6 @@
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -11,10 +10,6 @@ import java.util.zip.ZipOutputStream;
 
 public class Main {
     public static String path;
-    public static final String NODES = "nodes.txt";
-    public static final String LINKS = "links.txt";
-    public static final String CIRCUITS = "circuits.txt";
-    public static final String FLOWS = "flows.txt";
 
     public static void main(String[] args) {
         start();
@@ -66,13 +61,20 @@ public class Main {
         CSVParser parser = new CSVParser(fileReader, CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());
         List<CSVRecord> recordList = parser.getRecords();
         List<Bean> beans = new ArrayList<>();
+        Map<String, Map<String, String>> flowMap = new HashMap<>();
         for (CSVRecord r : recordList) {
             beans.add(new Bean(r.get(0), r.get(1), r.get(2), r.get(3), r.get(4), r.get(5), r.get(6), r.get(7), r.get(8)));
+
+            Map<String, String> map = new HashMap<>();
+            map.put("pId", r.get(2));
+            map.put("type", r.get(3));
+            flowMap.put(r.get(0), map);
         }
         Response r = new Response();
         r.setNodes(makeNodes(beans));
         r.setLinks(makeLinks(beans));
         r.setCircuits(makeCircuits(beans));
+        r.setFlows(makeFlows(flowMap));
 
         path = path.substring(0, path.lastIndexOf("\\"));
         writeJson(r, path);
@@ -107,14 +109,26 @@ public class Main {
         return circuits;
     }
 
-    public static String makeFlows(List<Bean> beans) {
+    public static Map<String, String[]> makeFlows(Map<String, Map<String, String>> flowMap) {
+        Map<String, String[]> resMap = new HashMap<>();
+        for(Map.Entry<String, Map<String, String>> entry: flowMap.entrySet()) {
+            List<String> list = new ArrayList<>();
+            Map<String, String> body = entry.getValue();
+            if(body.get("type").equals("type")) {
+                list.add(entry.getKey());
+                for(;;) {
+                    if(body.get("type").equals("S")) {
+                        break;
+                    }else {
+                        body = flowMap.get("pId");
+                    }
+                    list.add(body.get("pId"));
+                }
+            }
+            resMap.put(entry.getKey(), (String[]) list.toArray());
+        }
 
-        return "";
-    }
-
-    public static String strToJson(List<?> list) {
-        JSONArray jsonArray = new JSONArray(list);
-        return jsonArray.toString();
+        return resMap;
     }
 
     public static void writeZip(Map<String, byte[]> fileMap, String path) {
@@ -156,9 +170,7 @@ public class Main {
             printWriter.flush();
             printWriter.close();
         }catch (Exception e) {
-
-        }finally {
-
+            start();
         }
     }
 }
