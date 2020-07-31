@@ -51,14 +51,7 @@ public class Main {
                 Scanner scan = new Scanner(System.in);
                 String order = scan.nextLine();
                 if (order.equals("*")) {
-                    String regex = "\\\\";
-                    String[] array = path.split(regex);
-                    array = Arrays.copyOf(array, array.length - 1);
-                    path = "";
-                    for (int i = 0; i < array.length; i++) {
-                        path += array[i] + "\\";
-                    }
-                    open(path);
+                    open(path.substring(0, path.lastIndexOf("\\")));
                 } else {
                     path = path + "\\" + order;
                     open(path);
@@ -81,12 +74,12 @@ public class Main {
         System.out.println(Arrays.toString(new List[]{beans}));
         String nodes = makeNodes(beans);
         String links = makeLinks(beans);
-//        String circuits = makeCircuits(beans);
+        String circuits = makeCircuits(beans);
 
         Map<String, byte[]> map = new HashMap<>();
         map.put(NODES, nodes.getBytes());
         map.put(LINKS, links.getBytes());
-//        map.put(CIRCUITS, circuits.getBytes());
+        map.put(CIRCUITS, circuits.getBytes());
 
 //        String writePath = path.replace("\\");
         path = path.substring(0, path.lastIndexOf("\\"));
@@ -107,14 +100,23 @@ public class Main {
     }
 
     public static String makeLinks(List<Bean> beans) {
-        List<Link> nodes = new ArrayList<>();
+        List<Link> links = new ArrayList<>();
         for(Bean b: beans) {
-            nodes.add(new Link(b.getParent_ID(), b.getID(), b.getLength(), b.getDiameter()));
+            links.add(new Link(b.getParent_ID(), b.getID(), b.getLength(), b.getDiameter()));
         }
-        return strToJson(nodes);
+        return strToJson(links);
     }
 
     public static String makeCircuits(List<Bean> beans) {
+        List<Circuits> circuits = new ArrayList<>();
+        for(Bean b: beans) {
+            if(null != b.getCircuit() && !"".equals(b.getCircuit()))
+            circuits.add(new Circuits(b.getID(), b.getCircuit().split("/")));
+        }
+        return strToJson(circuits);
+    }
+
+    public static String makeFlows(List<Bean> beans) {
 
         return "";
     }
