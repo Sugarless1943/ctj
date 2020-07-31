@@ -2,11 +2,9 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -71,49 +69,42 @@ public class Main {
         for (CSVRecord r : recordList) {
             beans.add(new Bean(r.get(0), r.get(1), r.get(2), r.get(3), r.get(4), r.get(5), r.get(6), r.get(7), r.get(8)));
         }
-        System.out.println(Arrays.toString(new List[]{beans}));
-        String nodes = makeNodes(beans);
-        String links = makeLinks(beans);
-        String circuits = makeCircuits(beans);
+        Response r = new Response();
+        r.setNodes(makeNodes(beans));
+        r.setLinks(makeLinks(beans));
+        r.setCircuits(makeCircuits(beans));
 
-        Map<String, byte[]> map = new HashMap<>();
-        map.put(NODES, nodes.getBytes());
-        map.put(LINKS, links.getBytes());
-        map.put(CIRCUITS, circuits.getBytes());
-
-//        String writePath = path.replace("\\");
         path = path.substring(0, path.lastIndexOf("\\"));
-        System.out.println(path);
-        writeZip(map, path);
+        writeJson(r, path);
 
         parser.close();
         fileReader.close();
     }
 
-    public static String makeNodes(List<Bean> beans) {
+    public static List<Node> makeNodes(List<Bean> beans) {
         List<Node> nodes = new ArrayList<>();
         for(Bean b: beans) {
-            nodes.add(new Node(b.getID(), b.getName(), b.getType()));
+            nodes.add(new Node(b.getID(), b.getName(), b.getType(), b.getCid(), b.getParent_v_ID()));
         }
 
-        return strToJson(nodes);
+        return nodes;
     }
 
-    public static String makeLinks(List<Bean> beans) {
+    public static List<Link> makeLinks(List<Bean> beans) {
         List<Link> links = new ArrayList<>();
         for(Bean b: beans) {
             links.add(new Link(b.getParent_ID(), b.getID(), b.getLength(), b.getDiameter()));
         }
-        return strToJson(links);
+        return links;
     }
 
-    public static String makeCircuits(List<Bean> beans) {
-        List<Circuits> circuits = new ArrayList<>();
+    public static List<Circuit> makeCircuits(List<Bean> beans) {
+        List<Circuit> circuits = new ArrayList<>();
         for(Bean b: beans) {
             if(null != b.getCircuit() && !"".equals(b.getCircuit()))
-            circuits.add(new Circuits(b.getID(), b.getCircuit().split("/")));
+            circuits.add(new Circuit(b.getID(), b.getCircuit().split("/")));
         }
-        return strToJson(circuits);
+        return circuits;
     }
 
     public static String makeFlows(List<Bean> beans) {
@@ -146,6 +137,28 @@ public class Main {
             zipOutputStream.close();
         } catch (Exception e) {
             start();
+        }
+    }
+
+    public static void writeJson(Response response, String path) {
+        try {
+            File file = new File(path + "\\result.json");
+            if (file.exists()) {
+                file.delete();
+            } else {
+                file.createNewFile();
+            }
+
+            PrintWriter printWriter = new PrintWriter(file);
+            JSONObject jsonObject = new JSONObject(response);
+            printWriter.write(jsonObject.toString());
+
+            printWriter.flush();
+            printWriter.close();
+        }catch (Exception e) {
+
+        }finally {
+
         }
     }
 }

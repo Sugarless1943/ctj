@@ -1,8 +1,8 @@
-public class Circuits {
+public class Circuit {
     private String name;
     private String[] circuit;
 
-    public Circuits(String name, String[] circuit) {
+    public Circuit(String name, String[] circuit) {
         this.name = name;
         this.circuit = circuit;
     }
