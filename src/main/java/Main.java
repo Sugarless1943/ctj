@@ -123,7 +123,11 @@ public class Main {
                     }
                 }
 
-                res.put(e.getKey(), list.toArray(new String[list.size()]));
+                String[] arr = new String[list.size()];
+                for(int i=0;i<arr.length;i++) {
+                    arr[i] = list.get(list.size()-1-i);
+                }
+                res.put(e.getKey(), arr);
             }
         }
 
@@ -168,6 +172,7 @@ public class Main {
 
             printWriter.flush();
             printWriter.close();
+            System.out.println("执行成功！");
         } catch (Exception e) {
             start();
         }
