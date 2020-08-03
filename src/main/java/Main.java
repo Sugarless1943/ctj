@@ -61,20 +61,19 @@ public class Main {
         CSVParser parser = new CSVParser(fileReader, CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());
         List<CSVRecord> recordList = parser.getRecords();
         List<Bean> beans = new ArrayList<>();
-        Map<String, Map<String, String>> flowMap = new HashMap<>();
+        Map<String, String> famMap = new HashMap<>();
+        Map<String, String> typeMap = new HashMap<>();
+
         for (CSVRecord r : recordList) {
             beans.add(new Bean(r.get(0), r.get(1), r.get(2), r.get(3), r.get(4), r.get(5), r.get(6), r.get(7), r.get(8)));
-
-            Map<String, String> map = new HashMap<>();
-            map.put("pId", r.get(2));
-            map.put("type", r.get(3));
-            flowMap.put(r.get(0), map);
+            famMap.put(r.get(0), r.get(2));
+            typeMap.put(r.get(0), r.get(3));
         }
         Response r = new Response();
         r.setNodes(makeNodes(beans));
         r.setLinks(makeLinks(beans));
         r.setCircuits(makeCircuits(beans));
-        r.setFlows(makeFlows(flowMap));
+        r.setFlows(makeFlows(famMap, typeMap));
 
         path = path.substring(0, path.lastIndexOf("\\"));
         writeJson(r, path);
@@ -85,7 +84,7 @@ public class Main {
 
     public static List<Node> makeNodes(List<Bean> beans) {
         List<Node> nodes = new ArrayList<>();
-        for(Bean b: beans) {
+        for (Bean b : beans) {
             nodes.add(new Node(b.getID(), b.getName(), b.getType(), b.getCid(), b.getParent_v_ID()));
         }
 
@@ -94,7 +93,7 @@ public class Main {
 
     public static List<Link> makeLinks(List<Bean> beans) {
         List<Link> links = new ArrayList<>();
-        for(Bean b: beans) {
+        for (Bean b : beans) {
             links.add(new Link(b.getParent_ID(), b.getID(), b.getLength(), b.getDiameter()));
         }
         return links;
@@ -102,33 +101,33 @@ public class Main {
 
     public static List<Circuit> makeCircuits(List<Bean> beans) {
         List<Circuit> circuits = new ArrayList<>();
-        for(Bean b: beans) {
-            if(null != b.getCircuit() && !"".equals(b.getCircuit()))
-            circuits.add(new Circuit(b.getID(), b.getCircuit().split("/")));
+        for (Bean b : beans) {
+            if (null != b.getCircuit() && !"".equals(b.getCircuit()))
+                circuits.add(new Circuit(b.getID(), b.getCircuit().split("/")));
         }
         return circuits;
     }
 
-    public static Map<String, String[]> makeFlows(Map<String, Map<String, String>> flowMap) {
-        Map<String, String[]> resMap = new HashMap<>();
-        for(Map.Entry<String, Map<String, String>> entry: flowMap.entrySet()) {
-            List<String> list = new ArrayList<>();
-            Map<String, String> body = entry.getValue();
-            if(body.get("type").equals("type")) {
-                list.add(entry.getKey());
+    public static Map<String, String[]> makeFlows(Map<String, String> famMap, Map<String, String> typeMap) {
+        Map<String, String[]> res = new HashMap<>();
+        for(Map.Entry<String, String> e: typeMap.entrySet()) {
+            if(e.getValue().equals("H")) {
+                List<String> list = new ArrayList<>();
+                String key = e.getKey();
                 for(;;) {
-                    if(body.get("type").equals("S")) {
+                    list.add(key);
+                    if(typeMap.get(key).equals("S")) {
                         break;
                     }else {
-                        body = flowMap.get("pId");
+                        key = famMap.get(key);
                     }
-                    list.add(body.get("pId"));
                 }
+
+                res.put(e.getKey(), list.toArray(new String[list.size()]));
             }
-            resMap.put(entry.getKey(), (String[]) list.toArray());
         }
 
-        return resMap;
+        return res;
     }
 
     public static void writeZip(Map<String, byte[]> fileMap, String path) {
@@ -169,7 +168,7 @@ public class Main {
 
             printWriter.flush();
             printWriter.close();
-        }catch (Exception e) {
+        } catch (Exception e) {
             start();
         }
     }
