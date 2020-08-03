@@ -109,29 +109,34 @@ public class Main {
     }
 
     public static Map<String, String[]> makeFlows(Map<String, String> famMap, Map<String, String> typeMap) {
-        Map<String, String[]> res = new HashMap<>();
-        for(Map.Entry<String, String> e: typeMap.entrySet()) {
-            if(e.getValue().equals("H")) {
-                List<String> list = new ArrayList<>();
-                String key = e.getKey();
-                for(;;) {
-                    list.add(key);
-                    if(typeMap.get(key).equals("S")) {
-                        break;
-                    }else {
-                        key = famMap.get(key);
+        try {
+            Map<String, String[]> res = new HashMap<>();
+            for(Map.Entry<String, String> e: typeMap.entrySet()) {
+                if(e.getValue().equals("H")) {
+                    List<String> list = new ArrayList<>();
+                    String key = e.getKey();
+                    for(;;) {
+                        list.add(key);
+                        if(typeMap.get(key).equals("S")) {
+                            break;
+                        }else {
+                            key = famMap.get(key);
+                        }
                     }
-                }
 
-                String[] arr = new String[list.size()];
-                for(int i=0;i<arr.length;i++) {
-                    arr[i] = list.get(list.size()-1-i);
+                    String[] arr = new String[list.size()];
+                    for(int i=0;i<arr.length;i++) {
+                        arr[i] = list.get(list.size()-1-i);
+                    }
+                    res.put(e.getKey(), arr);
                 }
-                res.put(e.getKey(), arr);
             }
+            return res;
+        }catch (Exception e) {
+            System.out.println("flows回路不完善！");
+            start();
         }
-
-        return res;
+       return null;
     }
 
     public static void writeZip(Map<String, byte[]> fileMap, String path) {
@@ -159,7 +164,7 @@ public class Main {
 
     public static void writeJson(Response response, String path) {
         try {
-            File file = new File(path + "\\result.json");
+            File file = new File(path + "\\jiexiu_topolpgy.json");
             if (file.exists()) {
                 file.delete();
             } else {
