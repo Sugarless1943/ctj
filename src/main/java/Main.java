@@ -94,7 +94,7 @@ public class Main {
     public static List<Link> makeLinks(List<Bean> beans) {
         List<Link> links = new ArrayList<>();
         for (Bean b : beans) {
-            links.add(new Link(b.getParent_ID(), b.getID(), b.getLength(), b.getDiameter()));
+            if(null != b.getParent_ID() && !"".equals(b.getParent_ID())) links.add(new Link(b.getParent_ID(), b.getID(), b.getLength(), b.getDiameter()));
         }
         return links;
     }
