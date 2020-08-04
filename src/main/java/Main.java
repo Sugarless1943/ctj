@@ -178,6 +178,7 @@ public class Main {
             printWriter.flush();
             printWriter.close();
             System.out.println("执行成功！");
+            start();
         } catch (Exception e) {
             start();
         }
