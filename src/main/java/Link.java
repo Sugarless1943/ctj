@@ -1,22 +1,22 @@
 public class Link {
-    private String form;
+    private String from;
     private String to;
     private String length;
     private String diameter;
 
-    public Link(String form, String to, String length, String diameter) {
-        this.form = form;
+    public Link(String from, String to, String length, String diameter) {
+        this.from = from;
         this.to = to;
         this.length = length;
         this.diameter = diameter;
     }
 
-    public String getForm() {
-        return form;
+    public String getFrom() {
+        return from;
     }
 
-    public void setForm(String form) {
-        this.form = form;
+    public void setFrom(String from) {
+        this.from = from;
     }
 
     public String getTo() {
