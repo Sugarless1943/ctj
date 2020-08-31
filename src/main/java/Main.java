@@ -56,7 +56,7 @@ public class Main {
     }
 
     public static void downLoad(String path) throws IOException {
-        System.out.println("最终地址：" + path);
+//        System.out.println("最终地址：" + path);
         FileReader fileReader = new FileReader(path);
         CSVParser parser = new CSVParser(fileReader, CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());
         List<CSVRecord> recordList = parser.getRecords();
@@ -65,7 +65,7 @@ public class Main {
         Map<String, String> typeMap = new HashMap<>();
 
         for (CSVRecord r : recordList) {
-            beans.add(new Bean(r.get(0), r.get(1), r.get(2), r.get(3), r.get(4), r.get(5), r.get(6), r.get(7), r.get(8)));
+            beans.add(new Bean(r.get(0), r.get(1), r.get(2), r.get(3), r.get(4), r.get(5), r.get(6), r.get(7), r.get(8), r.get(9), r.get(10), r.get(11)));
             famMap.put(r.get(0), r.get(2));
             typeMap.put(r.get(0), r.get(3));
         }
@@ -85,7 +85,7 @@ public class Main {
     public static List<Node> makeNodes(List<Bean> beans) {
         List<Node> nodes = new ArrayList<>();
         for (Bean b : beans) {
-            nodes.add(new Node(b.getID(), b.getName(), b.getType(), b.getCid(), b.getParent_v_ID()));
+            nodes.add(new Node(b.getID(), b.getName(), b.getType(), b.getCid(), b.getParent_v_ID(), b.getHeat_Coef()));
         }
 
         return nodes;

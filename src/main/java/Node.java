@@ -4,13 +4,15 @@ public class Node {
     private String nodeType;
     private String Cid;
     private String Parent_V_Id;
+    private String Heat_Coef;
 
-    public Node(String nodeId, String nodeName, String nodeType, String cid, String parent_V_Id) {
+    public Node(String nodeId, String nodeName, String nodeType, String cid, String parent_V_Id, String Heat_Coef) {
         this.nodeId = nodeId;
         this.nodeName = nodeName;
         this.nodeType = nodeType;
-        Cid = cid;
-        Parent_V_Id = parent_V_Id;
+        this.Cid = cid;
+        this.Parent_V_Id = parent_V_Id;
+        this.Heat_Coef = Heat_Coef;
     }
 
     public String getNodeId() {
@@ -51,5 +53,13 @@ public class Node {
 
     public void setParent_V_Id(String parent_V_Id) {
         Parent_V_Id = parent_V_Id;
+    }
+
+    public String getHeat_Coef() {
+        return Heat_Coef;
+    }
+
+    public void setHeat_Coef(String heat_Coef) {
+        Heat_Coef = heat_Coef;
     }
 }

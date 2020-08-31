@@ -8,17 +8,23 @@ public class Bean {
     private String Cid;
     private String Parent_v_ID;
     private String Circuit;
+    private String Standard_Uid;
+    private String Parent_Tree;
+    private String Heat_Coef;
 
-    public Bean(String ID, String name, String parent_ID, String type, String length, String diameter, String cid, String parent_v_ID, String circuit) {
+    public Bean(String ID, String name, String parent_ID, String type, String length, String diameter, String cid, String parent_v_ID, String circuit, String standard_Uid, String parent_Tree, String heat_Coef) {
         this.ID = ID;
-        Name = name;
-        Parent_ID = parent_ID;
-        Type = type;
-        Length = length;
-        Diameter = diameter;
-        Cid = cid;
-        Parent_v_ID = parent_v_ID;
-        Circuit = circuit;
+        this.Name = name;
+        this.Parent_ID = parent_ID;
+        this.Type = type;
+        this.Length = length;
+        this.Diameter = diameter;
+        this.Cid = cid;
+        this.Parent_v_ID = parent_v_ID;
+        this.Circuit = circuit;
+        this.Standard_Uid = standard_Uid;
+        this.Parent_Tree = parent_Tree;
+        this.Heat_Coef = heat_Coef;
     }
 
     public String getID() {
@@ -34,7 +40,7 @@ public class Bean {
     }
 
     public void setName(String name) {
-        Name = name;
+        this.Name = name;
     }
 
     public String getParent_ID() {
@@ -42,7 +48,7 @@ public class Bean {
     }
 
     public void setParent_ID(String parent_ID) {
-        Parent_ID = parent_ID;
+        this.Parent_ID = parent_ID;
     }
 
     public String getType() {
@@ -50,7 +56,7 @@ public class Bean {
     }
 
     public void setType(String type) {
-        Type = type;
+        this.Type = type;
     }
 
     public String getLength() {
@@ -58,7 +64,7 @@ public class Bean {
     }
 
     public void setLength(String length) {
-        Length = length;
+        this.Length = length;
     }
 
     public String getDiameter() {
@@ -66,7 +72,7 @@ public class Bean {
     }
 
     public void setDiameter(String diameter) {
-        Diameter = diameter;
+        this.Diameter = diameter;
     }
 
     public String getCid() {
@@ -74,7 +80,7 @@ public class Bean {
     }
 
     public void setCid(String cid) {
-        Cid = cid;
+        this.Cid = cid;
     }
 
     public String getParent_v_ID() {
@@ -82,7 +88,7 @@ public class Bean {
     }
 
     public void setParent_v_ID(String parent_v_ID) {
-        Parent_v_ID = parent_v_ID;
+        this.Parent_v_ID = parent_v_ID;
     }
 
     public String getCircuit() {
@@ -90,6 +96,30 @@ public class Bean {
     }
 
     public void setCircuit(String circuit) {
-        Circuit = circuit;
+        this.Circuit = circuit;
+    }
+
+    public String getStandard_Uid() {
+        return Standard_Uid;
+    }
+
+    public void setStandard_Uid(String standard_Uid) {
+        this.Standard_Uid = standard_Uid;
+    }
+
+    public String getParent_Tree() {
+        return Parent_Tree;
+    }
+
+    public void setParent_Tree(String parent_Tree) {
+        this.Parent_Tree = parent_Tree;
+    }
+
+    public String getHeat_Coef() {
+        return Heat_Coef;
+    }
+
+    public void setHeat_Coef(String heat_Coef) {
+        this.Heat_Coef = heat_Coef;
     }
 }
